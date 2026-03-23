@@ -941,11 +941,9 @@
 
     /* RENDER */
     let grid = document.getElementById("grid");
-    if(!grid){
-      alert("Grid not found — check HTML");
-      return;
-    }
-    grid.innerHTML = ""; // clear old broken UI
+    if(grid){
+      grid.innerHTML = ""; // clear old broken UI
+
 
     designs.forEach((d, i) => {
       let card = document.createElement("div");
@@ -965,6 +963,7 @@
       `;
       grid.appendChild(card);
     });
+    }
 
     /* VIEW SWITCH */
     function changeView(event, i, type) {
