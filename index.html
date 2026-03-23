@@ -668,21 +668,21 @@
 <body>
 
   <div class="header" id="top">
-    <img src="logo.png" class="logo" id="logoImg" alt="Logo">
+    <img src="https://i.imgur.com/8Km9tLL.png" width="70" class="logo" id="logoImg" alt="Red Button">
     <div class="brand">Red Button</div>
   </div>
 
   <div class="hero" id="heroArea">
     <h1>Red Button</h1>
-    <p class="sub">Crafted for precision, styled for individuality — every blouse is tailored to your exact fit, fabric, and design.</p>
+    <p class="sub">Crafted for precision, styled for individuality — every blouse is tailored to your fit and design.</p>
     <div class="btn" onclick="document.getElementById('designGrid').scrollIntoView({behavior:'smooth'})">Start Designing</div>
     <div class="trust">
       ✔ India’s Premium Blouse Stitching Service <br>
       ✔ Precision Fit with Full Customisation <br>
       ✔ Fabric Pickup & End-to-End Stitching <br>
       ✔ Fast Turnaround & Express Delivery <br>
-      ✔ Live Order Tracking from Start to Finish <br>
-      ✔ Instant Correction Support with Expert Guidance 
+      ✔ Live Order Tracking <br>
+      ✔ Instant Correction Support
     </div>
   </div>
 
@@ -905,17 +905,25 @@
     /* ✅ CLEAN STATIC IMAGE SYSTEM */
     let designs = [];
     
-    function generateImage(query){
-      return "https://source.unsplash.com/400x500/?" + encodeURIComponent(query);
+    function generateImage(query, i){
+      // Unsplash source API is deprecated giving 403/410 errors. Using reliable fallback
+      return "https://picsum.photos/seed/" + encodeURIComponent(query + i) + "/400/500";
     }
+
+    let sampleImages = [
+      "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7",
+      "https://images.unsplash.com/photo-1618354691321-e851c56960d1",
+      "https://images.unsplash.com/photo-1583391733956-6c77a3a5e0c1",
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf"
+    ];
 
     for (let i = 1; i <= 20; i++) {
       designs.push({
         name: "Blouse Design " + i,
-        front: generateImage("indian blouse front" + "&" + i),
-        back: generateImage("indian blouse back" + "&" + i),
-        left: generateImage("blouse side view" + "&" + i),
-        right: generateImage("designer blouse" + "&" + i),
+        front: sampleImages[0],
+        back: sampleImages[1],
+        left: sampleImages[2],
+        right: sampleImages[3],
         currentView: 'front'
       });
     }
@@ -1142,10 +1150,6 @@
       t.innerText = msg; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3500);
     }
-
-    // Logo Fallback
-    const l = document.getElementById('logoImg');
-    if (l) l.onerror = () => { l.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23e8002d' stroke='%23d4af37' stroke-width='4'/%3E%3Ctext x='50' y='64' font-size='40' text-anchor='middle' fill='white' font-weight='bold'%3ER%3C/text%3E%3C/svg%3E"; };
 
   </script>
 </body>
