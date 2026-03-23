@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Red Button Premium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Red Button — Premium blouse design & tailoring service. Customize your perfect blouse with 3D preview.">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --red: #e8002d;
+      --red2: #ff1a4b;
+      --gold: #d4af37;
+      --dark: #050505;
+      --card: #111111;
+      --card2: #1a1a1a;
+      --border: rgba(212, 175, 55, 0.2);
+      --text: #f0e8ff;
+      --muted: rgba(240, 232, 255, 0.55);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,0,0,0.25), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(255,0,0,0.15), transparent 50%),
+        #050505;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+    }
+
+    body.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Ambient glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(232, 0, 45, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HEADER */
+    .header {
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .logo {
+      height: 60px;
+      width: 60px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 25px rgba(232, 0, 45, 0.4);
+      filter: drop-shadow(0 0 10px rgba(255,0,0,0.6));
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 30%, var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1.5px;
+    }
+
+    /* HERO */
+    .hero {
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero h1 {
+      font-size: 52px;
+      font-weight: 700;
+    }
+
+    .sub {
+      margin-top: 10px;
+      color: #bbb;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    /* BUTTONS */
+    .btn, .main-btn {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #ff1a1a, #7a0000);
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      border: none;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
+      transition: 0.3s;
+      animation: glow 2s infinite alternate;
+    }
+
+    .btn:hover, .main-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .trust {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.8;
+    }
+
+    .brand-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .box {
+      background: #111;
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .box h3 {
+      font-family: 'Playfair Display', serif;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .box p {
+      color: #aaa;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .cloth-btn {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .cloth-btn:hover,
+    .cloth-btn.selected {
+      border-color: var(--red);
+      background: rgba(232, 0, 45, 0.1);
+      color: #fff;
+    }
+
+    /* STEPS INDICATOR */
+    .steps {
+      display: none;
+      justify-content: center;
+      gap: 6px;
+      margin: 10px 0 20px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step {
+      height: 4px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      flex: 1;
+      max-width: 60px;
+      transition: 0.4s;
+    }
+
+    .step.active {
+      background: var(--red);
+    }
+
+    .step.done {
+      background: var(--gold);
+    }
+
+    /* SECTIONS */
+    .section {
+      display: none;
+      padding: 0 20px 40px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .section.show {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .sec-hd {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      margin-top: 10px;
+    }
+
+    .sec-hd h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      white-space: nowrap;
+    }
+
+    .sec-hd .line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* GRID (Responsive) */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    @media (max-width:380px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* CARD & MULTI-VIEW */
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      transition: 0.4s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255, 0, 0, 0.1), transparent);
+      opacity: 0;
+      transition: 0.4s;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 25px 60px rgba(255, 0, 0, 0.25);
+    }
+
+    .card .img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      transition: opacity 0.3s ease, transform 0.5s;
+      filter: contrast(1.1) brightness(0.95);
+    }
+
+    .card:hover .img {
+      transform: scale(1.08);
+    }
+
+    /* PLACEHOLDER / LOADING */
+    .placeholder {
+      width: 100%;
+      height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(90deg, #111, #1a1a1a, #111);
+      background-size: 200%;
+      animation: loadingShimmer 1.5s infinite;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.05);
+    }
+
+    @keyframes loadingShimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    .logo-mark {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      background: var(--dark);
+      padding: 2px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .name {
+      padding: 12px 10px 6px;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      text-transform: capitalize;
+    }
+
+    .views {
+      display: flex;
+      gap: 6px;
+      padding: 0 10px 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .view-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 12px;
+      background: #1a1a1a;
+      color: #aaa;
+      font-size: 11px;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: 0.3s;
+      transform: scale(1);
+    }
+
+    .view-btn:active {
+      transform: scale(0.9);
+    }
+
+    .view-btn.active {
+      background: linear-gradient(135deg, #ff1a1a, #990000);
+      color: white;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.5);
+    }
+
+    /* FORMS & SHARED */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0;
+    }
+
+    .form-group {
+      margin-top: 14px;
+    }
+
+    .form-group label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(232, 0, 45, 0.15);
+    }
+
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      position: relative;
+    }
+
+    .upload-zone:hover {
+      border-color: var(--red);
+      background: rgba(232, 0, 45, 0.05);
+    }
+
+    .upload-zone input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* POPUP */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      z-index: 999;
+      backdrop-filter: blur(8px);
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .popup.open {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .popup-container {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      margin: auto 0;
+    }
+
+    .popup-header {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .popup-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+    }
+
+    .popup-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-close:hover {
+      background: var(--red);
+    }
+
+    .popup-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .popup-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .canvas-wrap {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #080808;
+      position: relative;
+      height: 180px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .canvas-label {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-size: 10px;
+      color: var(--gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .popup-footer {
+      padding: 16px;
+    }
+
+    .popup-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--red), #8b0000);
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--card2);
+      border: 1px solid var(--gold);
+      border-radius: 14px;
+      padding: 13px 24px;
+      color: var(--gold);
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 9999;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* FULLSCREEN OVERLAY */
+    #overlay{
+      position:fixed;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:#050505;
+      z-index:999;
+      display:none;
+      border-radius:20px 20px 0 0;
+      overflow:auto;
+      padding:20px;
+    }
+
+    #overlay input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(20,20,20,0.8);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header" id="top">
+    <img src="logo.png" class="logo" id="logoImg" alt="Logo">
+    <div class="brand">Red Button</div>
+  </div>
+
+  <div class="hero" id="heroArea">
+    <h1>Red Button</h1>
+    <p class="sub">Crafted for precision, styled for individuality — every blouse is tailored to your exact fit, fabric, and design.</p>
+    <div class="btn" onclick="document.getElementById('designGrid').scrollIntoView({behavior:'smooth'})">Start Designing</div>
+    <div class="trust">
+      ✔ India’s Premium Blouse Stitching Service <br>
+      ✔ Precision Fit with Full Customisation <br>
+      ✔ Fabric Pickup & End-to-End Stitching <br>
+      ✔ Fast Turnaround & Express Delivery <br>
+      ✔ Live Order Tracking from Start to Finish <br>
+      ✔ Instant Correction Support with Expert Guidance 
+    </div>
+  </div>
+
+  <div class="brand-section">
+    <div class="box">
+      <h3>Fit Focused</h3>
+      <p>Every blouse is stitched based on your exact measurements, not standard sizes.</p>
+    </div>
+    <div class="box">
+      <h3>Design Control</h3>
+      <p>Neck, back, sleeves, padding — everything is customizable.</p>
+    </div>
+    <div class="box">
+      <h3>Fabric Flexibility</h3>
+      <p>Use your own cloth or let us source premium materials for you.</p>
+    </div>
+  </div>
+
+  <div class="steps" id="stepBar">
+    <div class="step" id="s1"></div>
+    <div class="step" id="s2"></div>
+    <div class="step" id="s3"></div>
+    <div class="step" id="s4"></div>
+  </div>
+
+  <!-- STEP 1: GRID -->
+  <div id="step1" class="section">
+    <div class="sec-hd">
+      <h2>Premium Collection</h2>
+      <div class="line"></div>
+    </div>
+    <div class="grid" id="designGrid"></div>
+  </div>
+
+  <!-- STEP 2: FABRIC -->
+  <div id="step2" class="section">
+    <div class="sec-hd">
+      <h2>Fabric &amp; Details</h2>
+      <div class="line"></div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <button class="cloth-btn" id="haveCloth" onclick="setCloth('Have')">🧵 Have Cloth</button>
+      <button class="cloth-btn" id="needCloth" onclick="setCloth('Need')">🛍️ Source For Me</button>
+    </div>
+    <div id="fabricDetails" style="display:none; margin-top:14px;">
+      <div class="form-group">
+        <label>Fabric Preference</label>
+        <select id="fabricType">
+          <option>Silk</option>
+          <option>Georgette</option>
+          <option>Cotton</option>
+          <option>Crepe</option>
+          <option>Velvet</option>
+          <option>Net</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Color</label><input id="colorPref" placeholder="e.g. Deep maroon"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="form-group"><label>Special Instructions</label><textarea id="notes" rows="3"
+        placeholder="Embellishments, specific cuts, etc..."></textarea></div>
+    <div class="divider"></div>
+    <div class="sec-hd">
+      <h2>Upload Saree/Reference</h2>
+      <div class="line"></div>
+    </div>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" accept="image/*" onchange="previewUpload(event)">
+      <div style="font-size:24px;margin-bottom:8px">📷</div>
+      <div id="uploadText" style="font-size:13px;color:var(--muted)">Tap to upload image</div>
+    </div>
+    <img id="uploadPreview"
+      style="width:100%;border-radius:12px;margin-top:14px;display:none;border:1px solid rgba(212,175,55,0.2);">
+
+    <div style="display:flex; gap:12px; margin-top:24px;">
+      <button class="cloth-btn" style="flex:1" onclick="goStep(1)">Back</button>
+      <button class="main-btn" style="flex:2; margin-top:0;" onclick="goStep(3)">Next: Measurements</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: MEASUREMENTS -->
+  <div id="step3" class="section">
+    <div class="sec-hd">
+      <h2>Measurements</h2>
+      <div class="line"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label>Bust (in)</label><input type="number" id="bust" placeholder="36"></div>
+      <div class="form-group"><label>Waist (in)</label><input type="number" id="waist" placeholder="30"></div>
+      <div class="form-group"><label>Shoulder (in)</label><input type="number" id="shoulder" placeholder="14"></div>
+      <div class="form-group"><label>Length (in)</label><input type="number" id="length" placeholder="15"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="sec-hd">
+      <h2>Contact Info</h2>
+      <div class="line"></div>
+    </div>
+    <div class="form-group"><label>Full Name</label><input id="custName" placeholder="Your name"></div>
+    <div class="form-group"><label>Phone Number</label><input id="custPhone" type="tel" placeholder="+91 XXXXX XXXXX">
+    </div>
+    <div style="display:flex; gap:12px; margin-top:24px;">
+      <button class="cloth-btn" style="flex:1" onclick="goStep(2)">Back</button>
+      <button class="main-btn" style="flex:2; margin-top:0;" onclick="goStep(4)">Review Order</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: SUMMARY -->
+  <div id="step4" class="section">
+    <div class="sec-hd">
+      <h2>Order Summary</h2>
+      <div class="line"></div>
+    </div>
+    <div id="orderSummary"
+      style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:16px;"></div>
+    <button class="main-btn" style="width:100%;margin-top:20px;" onclick="placeOrder()" id="orderBtn">🔴 Place Final
+      Order</button>
+    <button class="cloth-btn" style="width:100%;margin-top:10px;padding:12px;background:transparent;"
+      onclick="goStep(3)">Edit Details</button>
+  </div>
+
+  <!-- FULLSCREEN PREVIEW OVERLAY -->
+  <div id="overlay" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#050505;
+  z-index:9999;
+  display:none;
+  overflow:auto;
+  padding:20px;
+  ">
+
+    <div style="max-width:500px; margin:auto;">
+
+      <img id="overlayImg" style="
+        width:100%;
+        border-radius:20px;
+        transition:0.3s;
+      ">
+
+      <h2 id="overlayTitle" style="margin-top:15px; text-transform:capitalize;"></h2>
+
+      <!-- VIEW SWITCH -->
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button class="view-btn" onclick="changeOverlayView('front')">Front</button>
+        <button class="view-btn" onclick="changeOverlayView('back')">Back</button>
+        <button class="view-btn" onclick="changeOverlayView('left')">Left</button>
+        <button class="view-btn" onclick="changeOverlayView('right')">Right</button>
+      </div>
+
+      <!-- CUSTOMIZATION -->
+      <div style="margin-top:20px;">
+        <h3>Measurements</h3>
+        <input placeholder="Bust" id="bust">
+        <input placeholder="Waist" id="waist">
+        <input placeholder="Shoulder" id="shoulder">
+
+        <h3 style="margin-top:15px">Cloth</h3>
+        <select id="cloth" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid var(--border); background:rgba(20,20,20,0.8); color:var(--text);">
+          <option>I Have Cloth</option>
+          <option>I Need Cloth</option>
+        </select>
+
+        <h3 style="margin-top:15px">Notes</h3>
+        <textarea id="notes" placeholder="Any custom request" style="width:100%; padding:12px; min-height:80px; margin-bottom:10px; border-radius:8px; border:1px solid var(--border); background:rgba(20,20,20,0.8); color:var(--text);"></textarea>
+      </div>
+
+      <!-- ORDER BUTTON -->
+      <div style="
+        margin-top:20px;
+        padding:14px;
+        background:red;
+        text-align:center;
+        border-radius:12px;
+        cursor:pointer;
+        font-weight:600;
+        box-shadow:0 10px 30px rgba(255,0,0,0.4);
+      " onclick="placeOrder()">
+        Place Order
+      </div>
+
+    </div>
+  </div>
+
+  <!-- POPUP -->
+  <div class="popup" id="popup">
+    <div class="popup-container">
+      <div class="popup-header">
+        <h2 id="popupTitle"></h2>
+        <button class="popup-close" onclick="closePopup()">✕</button>
+      </div>
+      <div class="popup-body">
+        <img id="popupImg" class="popup-img" src="">
+        <!-- 3D CANVAS in popup -->
+        <div class="canvas-wrap">
+          <div class="canvas-label">3D Structure</div>
+          <canvas id="canvas"></canvas>
+        </div>
+      </div>
+      <div class="popup-footer">
+        <button class="popup-btn" onclick="selectStyleAndProceed()">✔ Select &amp; Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Reveal Document gracefully on load
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+    });
+
+    // ❌ HARD RESET (REMOVE ANY OLD AI LOGIC)
+    window.generateBlouse = null;
+    window.generate = null;
+
+    /* ✅ CLEAN STATIC IMAGE SYSTEM */
+    let designs = [];
+    
+    function generateImage(query){
+      return "https://source.unsplash.com/400x500/?" + encodeURIComponent(query);
+    }
+
+    for (let i = 1; i <= 20; i++) {
+      designs.push({
+        name: "Blouse Design " + i,
+        front: generateImage("indian blouse front" + "&" + i),
+        back: generateImage("indian blouse back" + "&" + i),
+        left: generateImage("blouse side view" + "&" + i),
+        right: generateImage("designer blouse" + "&" + i),
+        currentView: 'front'
+      });
+    }
+
+    const state = { design: '', currentDesignImage: '', cloth: 'I Have Cloth', step: 1 };
+    let animFrame;
+
+    /* RENDER */
+    let grid = document.getElementById("designGrid");
+    grid.innerHTML = ""; // clear old broken UI
+
+    designs.forEach((d, i) => {
+      let card = document.createElement("div");
+      card.className = "card";
+      card.onclick = (e) => openDetail(e, i);
+      card.style.animationDelay = (i * 0.05) + "s";
+
+      card.innerHTML = `
+        <img src="${d.front}" class="img" id="img${i}">
+        <div class="name">${d.name}</div>
+        <div class="views">
+          <button class="view-btn active" id="btn_f_${i}" onclick="changeView(event, ${i}, 'front')">F</button>
+          <button class="view-btn" id="btn_b_${i}" onclick="changeView(event, ${i}, 'back')">B</button>
+          <button class="view-btn" id="btn_l_${i}" onclick="changeView(event, ${i}, 'left')">L</button>
+          <button class="view-btn" id="btn_r_${i}" onclick="changeView(event, ${i}, 'right')">R</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    /* VIEW SWITCH */
+    function changeView(event, i, type) {
+      event.stopPropagation(); // Prevents card popup from opening
+      
+      let img = document.getElementById("img" + i);
+      img.style.opacity = 0;
+
+      setTimeout(() => {
+        img.src = designs[i][type];
+        img.style.opacity = 1;
+      }, 200);
+      
+      designs[i].currentView = type;
+
+      let buttons = event.target.parentElement.querySelectorAll("button");
+      buttons.forEach(b => b.classList.remove("active"));
+      event.target.classList.add("active");
+    }
+
+    /* FULLSCREEN OVERLAY LOGIC */
+    let currentDesign = null;
+
+    function openDetail(e, i){
+      currentDesign = designs[i];
+
+      const overlay = document.getElementById("overlay");
+
+      overlay.style.display = "block";
+      overlay.style.transform = "translateY(100%)";
+
+      document.getElementById("overlayImg").src = designs[i].front;
+      document.getElementById("overlayTitle").innerText = designs[i].name;
+
+      setTimeout(()=>{
+        overlay.style.transition = "all 0.5s cubic-bezier(0.22,1,0.36,1)";
+        overlay.style.transform = "translateY(0)";
+      }, 10);
+    }
+
+    function changeOverlayView(view){
+      document.getElementById("overlayImg").src = currentDesign[view];
+    }
+
+    document.getElementById("overlay").onclick = function(e){
+      if(e.target.id === "overlay"){
+        this.style.transform = "translateY(100%)";
+
+        setTimeout(()=>{
+          this.style.display = "none";
+        }, 400);
+      }
+    };
+
+    function placeOrder(){
+      let bust = document.getElementById("bust").value;
+      let wait = document.getElementById("waist").value;
+
+      alert(
+        "Order Placed ✅\\n" +
+        "Design: " + currentDesign.name + "\\n" +
+        "Bust: " + (bust || 'Standard')
+      );
+      document.getElementById("overlay").click(); // Trigger close animation
+    }
+
+    /* FLOW CONTROL */
+    function startDesign() {
+      document.getElementById('heroArea').style.display = 'none';
+      if(document.getElementById('heroSpacer')) document.getElementById('heroSpacer').style.display = 'none';
+      document.getElementById('stepBar').style.display = 'flex';
+      goStep(1);
+    }
+
+    function goStep(n) {
+      if (n === 4) buildSummary();
+      for (let i = 1; i <= 4; i++) {
+        let sec = document.getElementById('step' + i);
+        if (sec) sec.style.display = (i === n) ? 'block' : 'none';
+        let stepDot = document.getElementById('s' + i);
+        if (stepDot) stepDot.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
+      }
+      state.step = n;
+      document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
+      if (animFrame) cancelAnimationFrame(animFrame);
+    }
+
+    /* POPUP */
+    function openPopup(index) {
+      const d = designs[index];
+      state.design = d.name;
+      state.currentDesignImage = d[d.currentView]; // Pass the currently viewed angle to the popup
+      document.getElementById("popupTitle").innerText = d.name;
+      document.getElementById("popupImg").src = state.currentDesignImage;
+      document.getElementById("popup").classList.add("open");
+      initCanvas();
+    }
+    function closePopup() {
+      document.getElementById("popup").classList.remove("open");
+      if (animFrame) cancelAnimationFrame(animFrame);
+    }
+    function selectStyleAndProceed() {
+      closePopup();
+      showToast('✔ ' + state.design + ' selected');
+      goStep(2);
+    }
+
+    /* 3D CANVAS */
+    function initCanvas() {
+      const cv = document.getElementById('canvas');
+      if (!cv) return;
+      cv.width = cv.offsetWidth; cv.height = cv.offsetHeight;
+      const ctx = cv.getContext('2d');
+      let angle = 0;
+      if (animFrame) cancelAnimationFrame(animFrame);
+
+      (function draw() {
+        const W = cv.width, H = cv.height;
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "#080808"; ctx.fillRect(0, 0, W, H);
+        ctx.save();
+        ctx.translate(W / 2, H / 2 + 10);
+        const wave = Math.sin(angle * 0.04) * 6;
+
+        // Abstract Torso rendering
+        ctx.beginPath();
+        ctx.moveTo(-45 + wave, -60);
+        ctx.bezierCurveTo(-60 + wave, -30, -60 + wave, 30, -42 + wave, 60);
+        ctx.bezierCurveTo(-15 + wave, 80, 15 + wave, 80, 42 + wave, 60);
+        ctx.bezierCurveTo(60 + wave, 30, 60 + wave, -30, 45 + wave, -60);
+        ctx.bezierCurveTo(25 + wave, -75, -25 + wave, -75, -45 + wave, -60);
+        ctx.closePath();
+
+        const gr = ctx.createLinearGradient(-50, -70, 50, 80);
+        gr.addColorStop(0, 'rgba(232,0,45,0.4)');
+        gr.addColorStop(1, 'rgba(139,0,0,0.1)');
+        ctx.fillStyle = gr; ctx.fill();
+        ctx.strokeStyle = 'rgba(232,0,45,0.8)'; ctx.lineWidth = 2; ctx.stroke();
+
+        ctx.beginPath(); ctx.arc(wave, -60, 18, 0, Math.PI, false);
+        ctx.strokeStyle = 'rgba(212,175,55,0.7)'; ctx.stroke();
+
+        ctx.font = 'bold 16px Poppins'; ctx.fillStyle = 'rgba(212,175,55,0.6)';
+        ctx.textAlign = 'center'; ctx.fillText('R', wave, 10);
+
+        ctx.restore();
+        angle++;
+        animFrame = requestAnimationFrame(draw);
+      })();
+    }
+
+    /* CLOTH & MISC */
+    function setCloth(type) {
+      state.cloth = type === 'Have' ? 'I Have Cloth' : 'Need Cloth Sourcing';
+      document.getElementById('haveCloth').classList.toggle('selected', type === 'Have');
+      document.getElementById('needCloth').classList.toggle('selected', type === 'Need');
+      document.getElementById('fabricDetails').style.display = type === 'Need' ? 'block' : 'none';
+    }
+    function previewUpload(e) {
+      const f = e.target.files[0];
+      if (f) {
+        document.getElementById('uploadPreview').src = URL.createObjectURL(f);
+        document.getElementById('uploadPreview').style.display = 'block';
+        document.getElementById('uploadText').innerText = f.name;
+        document.getElementById('uploadZone').style.borderColor = 'var(--red)';
+      }
+    }
+
+    /* ORDER */
+    function buildSummary() {
+      const v = id => document.getElementById(id).value || '—';
+      const rows = [
+        ['Ordered Style', state.design], ['Fabric', state.cloth],
+        ['Bust (in)', v('bust')], ['Waist (in)', v('waist')],
+        ['Name', v('custName')], ['Phone', v('custPhone')]
+      ];
+      let h = '';
+      rows.forEach(r => h += `<div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.05);padding:8px 0;font-size:14px;"><span style="color:var(--muted)">${r[0]}</span><span style="font-weight:500">${r[1]}</span></div>`);
+      document.getElementById('orderSummary').innerHTML = h;
+    }
+    // Fallback placeOrder mapped to new one to avoid conflicts
+    function legacyPlaceOrder() {
+      const n = document.getElementById('custName').value, p = document.getElementById('custPhone').value;
+      if (!n || !p) { showToast('⚠️ Enter Name & Phone'); return; }
+      const b = document.getElementById('orderBtn');
+      b.disabled = true; b.innerText = 'Processing...';
+      setTimeout(() => {
+        b.innerText = '✅ Order Confirmed';
+        b.style.background = 'linear-gradient(135deg, #1a7a2e, #0a4f1a)';
+        showToast('🎉 Order Successfully Submitted!');
+      }, 1500);
+    }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // Logo Fallback
+    const l = document.getElementById('logoImg');
+    if (l) l.onerror = () => { l.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23e8002d' stroke='%23d4af37' stroke-width='4'/%3E%3Ctext x='50' y='64' font-size='40' text-anchor='middle' fill='white' font-weight='bold'%3ER%3C/text%3E%3C/svg%3E"; };
+
+  </script>
+</body>
+
+</html>
