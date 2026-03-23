@@ -34,8 +34,8 @@
 
     body {
       background:
-        radial-gradient(circle at 50% 0%, rgba(255,0,0,0.25), transparent 40%),
-        radial-gradient(circle at 80% 20%, rgba(255,0,0,0.15), transparent 50%),
+        radial-gradient(circle at 50% 0%, rgba(255, 0, 0, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(255, 0, 0, 0.15), transparent 50%),
         #050505;
       color: white;
       font-family: 'Poppins', sans-serif;
@@ -84,7 +84,7 @@
       border-radius: 50%;
       border: 2px solid var(--gold);
       box-shadow: 0 0 25px rgba(232, 0, 45, 0.4);
-      filter: drop-shadow(0 0 10px rgba(255,0,0,0.6));
+      filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6));
     }
 
     .brand {
@@ -122,7 +122,8 @@
     }
 
     /* BUTTONS */
-    .btn, .main-btn {
+    .btn,
+    .main-btn {
       display: inline-block;
       margin-top: 25px;
       padding: 14px 32px;
@@ -139,7 +140,8 @@
       animation: glow 2s infinite alternate;
     }
 
-    .btn:hover, .main-btn:hover {
+    .btn:hover,
+    .main-btn:hover {
       transform: scale(1.05);
     }
 
@@ -165,11 +167,13 @@
       border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
+
     .box h3 {
       font-family: 'Playfair Display', serif;
       color: #fff;
       margin-bottom: 8px;
     }
+
     .box p {
       color: #aaa;
       font-size: 13px;
@@ -638,18 +642,18 @@
     }
 
     /* FULLSCREEN OVERLAY */
-    #overlay{
-      position:fixed;
-      bottom:0;
-      left:0;
-      width:100%;
-      height:100%;
-      background:#050505;
-      z-index:999;
-      display:none;
-      border-radius:20px 20px 0 0;
-      overflow:auto;
-      padding:20px;
+    #overlay {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #050505;
+      z-index: 999;
+      display: none;
+      border-radius: 20px 20px 0 0;
+      overflow: auto;
+      padding: 20px;
     }
 
     #overlay input {
@@ -658,7 +662,7 @@
       margin-bottom: 10px;
       border-radius: 8px;
       border: 1px solid var(--border);
-      background: rgba(20,20,20,0.8);
+      background: rgba(20, 20, 20, 0.8);
       color: var(--text);
       font-family: 'Poppins', sans-serif;
     }
@@ -674,15 +678,17 @@
 
   <div class="hero" id="heroArea">
     <h1>Red Button</h1>
-    <p class="sub">Crafted for precision, styled for individuality — every blouse is tailored to your fit and design.</p>
-    <div class="btn" onclick="document.getElementById('designGrid').scrollIntoView({behavior:'smooth'})">Start Designing</div>
+    <p class="sub">Crafted for precision, styled for individuality — every blouse is tailored to your exact fit, fabric,
+      and design.</p>
+    <div class="btn" onclick="document.getElementById('designGrid').scrollIntoView({behavior:'smooth'})">Start Designing
+    </div>
     <div class="trust">
       ✔ India’s Premium Blouse Stitching Service <br>
       ✔ Precision Fit with Full Customisation <br>
       ✔ Fabric Pickup & End-to-End Stitching <br>
       ✔ Fast Turnaround & Express Delivery <br>
-      ✔ Live Order Tracking <br>
-      ✔ Instant Correction Support
+      ✔ Live Order Tracking from Start to Finish <br>
+      ✔ Instant Correction Support with Expert Guidance
     </div>
   </div>
 
@@ -714,7 +720,7 @@
       <h2>Premium Collection</h2>
       <div class="line"></div>
     </div>
-    <div class="grid" id="designGrid"></div>
+    <div class="grid" id="grid"></div>
   </div>
 
   <!-- STEP 2: FABRIC -->
@@ -843,13 +849,15 @@
         <input placeholder="Shoulder" id="shoulder">
 
         <h3 style="margin-top:15px">Cloth</h3>
-        <select id="cloth" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid var(--border); background:rgba(20,20,20,0.8); color:var(--text);">
+        <select id="cloth"
+          style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid var(--border); background:rgba(20,20,20,0.8); color:var(--text);">
           <option>I Have Cloth</option>
           <option>I Need Cloth</option>
         </select>
 
         <h3 style="margin-top:15px">Notes</h3>
-        <textarea id="notes" placeholder="Any custom request" style="width:100%; padding:12px; min-height:80px; margin-bottom:10px; border-radius:8px; border:1px solid var(--border); background:rgba(20,20,20,0.8); color:var(--text);"></textarea>
+        <textarea id="notes" placeholder="Any custom request"
+          style="width:100%; padding:12px; min-height:80px; margin-bottom:10px; border-radius:8px; border:1px solid var(--border); background:rgba(20,20,20,0.8); color:var(--text);"></textarea>
       </div>
 
       <!-- ORDER BUTTON -->
@@ -904,8 +912,8 @@
 
     /* ✅ CLEAN STATIC IMAGE SYSTEM */
     let designs = [];
-    
-    function generateImage(query, i){
+
+    function generateImage(query, i) {
       // Unsplash source API is deprecated giving 403/410 errors. Using reliable fallback
       return "https://picsum.photos/seed/" + encodeURIComponent(query + i) + "/400/500";
     }
@@ -932,7 +940,11 @@
     let animFrame;
 
     /* RENDER */
-    let grid = document.getElementById("designGrid");
+    let grid = document.getElementById("grid");
+    if(!grid){
+      alert("Grid not found — check HTML");
+      return;
+    }
     grid.innerHTML = ""; // clear old broken UI
 
     designs.forEach((d, i) => {
@@ -957,7 +969,7 @@
     /* VIEW SWITCH */
     function changeView(event, i, type) {
       event.stopPropagation(); // Prevents card popup from opening
-      
+
       let img = document.getElementById("img" + i);
       img.style.opacity = 0;
 
@@ -965,7 +977,7 @@
         img.src = designs[i][type];
         img.style.opacity = 1;
       }, 200);
-      
+
       designs[i].currentView = type;
 
       let buttons = event.target.parentElement.querySelectorAll("button");
@@ -976,7 +988,7 @@
     /* FULLSCREEN OVERLAY LOGIC */
     let currentDesign = null;
 
-    function openDetail(e, i){
+    function openDetail(e, i) {
       currentDesign = designs[i];
 
       const overlay = document.getElementById("overlay");
@@ -987,27 +999,27 @@
       document.getElementById("overlayImg").src = designs[i].front;
       document.getElementById("overlayTitle").innerText = designs[i].name;
 
-      setTimeout(()=>{
+      setTimeout(() => {
         overlay.style.transition = "all 0.5s cubic-bezier(0.22,1,0.36,1)";
         overlay.style.transform = "translateY(0)";
       }, 10);
     }
 
-    function changeOverlayView(view){
+    function changeOverlayView(view) {
       document.getElementById("overlayImg").src = currentDesign[view];
     }
 
-    document.getElementById("overlay").onclick = function(e){
-      if(e.target.id === "overlay"){
+    document.getElementById("overlay").onclick = function (e) {
+      if (e.target.id === "overlay") {
         this.style.transform = "translateY(100%)";
 
-        setTimeout(()=>{
+        setTimeout(() => {
           this.style.display = "none";
         }, 400);
       }
     };
 
-    function placeOrder(){
+    function placeOrder() {
       let bust = document.getElementById("bust").value;
       let wait = document.getElementById("waist").value;
 
@@ -1022,7 +1034,7 @@
     /* FLOW CONTROL */
     function startDesign() {
       document.getElementById('heroArea').style.display = 'none';
-      if(document.getElementById('heroSpacer')) document.getElementById('heroSpacer').style.display = 'none';
+      if (document.getElementById('heroSpacer')) document.getElementById('heroSpacer').style.display = 'none';
       document.getElementById('stepBar').style.display = 'flex';
       goStep(1);
     }
